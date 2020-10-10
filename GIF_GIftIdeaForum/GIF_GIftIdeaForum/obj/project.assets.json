@@ -656,23 +656,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\joshu\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\stell\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Users\\joshu\\Documents\\ProgramProjects\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum.csproj",
+      "projectUniqueName": "D:\\Github\\Gif---Gift-Idea-Forum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum.csproj",
       "projectName": "GIF_GIftIdeaForum",
-      "projectPath": "E:\\Users\\joshu\\Documents\\ProgramProjects\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum.csproj",
-      "packagesPath": "C:\\Users\\joshu\\.nuget\\packages\\",
-      "outputPath": "E:\\Users\\joshu\\Documents\\ProgramProjects\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum\\obj\\",
+      "projectPath": "D:\\Github\\Gif---Gift-Idea-Forum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum.csproj",
+      "packagesPath": "C:\\Users\\stell\\.nuget\\packages\\",
+      "outputPath": "D:\\Github\\Gif---Gift-Idea-Forum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\joshu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\stell\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
