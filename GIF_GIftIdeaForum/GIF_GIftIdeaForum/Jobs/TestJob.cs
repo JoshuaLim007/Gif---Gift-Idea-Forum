@@ -9,7 +9,7 @@ namespace GIF_GIftIdeaForum.Jobs
     [ExecutionOrder(0)] //Requires Execution Order Number
     [BindToClass(typeof(IndexModel))] //This ensures that this class is only ran when a specific page is opened
     //without this, the class would run anytime any pages open
-    public class TestJob : Base
+    public class TestJob : JobBehaviour
     {
         public override void Run()
         {
@@ -17,9 +17,9 @@ namespace GIF_GIftIdeaForum.Jobs
         }
     }
 
-    [ExecutionOrder(1)]
+    [ExecutionOrder(0.25f)]
     [BindToClass(typeof(IndexModel))]
-    public class TestJobSecond : Base
+    public class TestJobSecond : JobBehaviour
     {
         public override void Run()
         {
@@ -27,9 +27,9 @@ namespace GIF_GIftIdeaForum.Jobs
         }
     }
 
-    [ExecutionOrder(2)]
+    [ExecutionOrder(0.5f)]
     [BindToClass(typeof(IndexModel))]
-    public class TestJobThird : Base
+    public class TestJobThird : JobBehaviour
     {
         public override void Run()
         {

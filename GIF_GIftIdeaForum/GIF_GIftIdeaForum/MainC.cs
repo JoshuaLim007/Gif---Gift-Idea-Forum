@@ -28,9 +28,9 @@ namespace GIF_GIftIdeaForum
     }
     public class ExecutionOrder : System.Attribute
     {
-        public int orderTime;
+        public float orderTime;
 
-        public ExecutionOrder(int orderTime)
+        public ExecutionOrder(float orderTime)
         {
             this.orderTime = orderTime;
         }
@@ -49,16 +49,16 @@ namespace GIF_GIftIdeaForum
             public List<MethodData> _datas = new List<MethodData>();
         }
         //private static List<Base> BaseScripts = new List<Base>();
-        private static SortedList<int, MethodDataList> OrderedExecutionTimes = new SortedList<int, MethodDataList>();
+        private static SortedList<float, MethodDataList> OrderedExecutionTimes = new SortedList<float, MethodDataList>();
         private static bool NewWeb { get; set; }
         private static void FindBases()
         {
-            Type parentType = typeof(Base);
+            Type parentType = typeof(JobBehaviour);
             Assembly assembly = Assembly.GetExecutingAssembly();
             Type[] types = assembly.GetTypes();
             IEnumerable<Type> subclasses = types.Where(t => t.IsSubclassOf(parentType));
 
-            int orderNum = 0;
+            float orderNum = 0;
             foreach (Type type in subclasses)
             {
                 ConstructorInfo cType = type.GetConstructor(Type.EmptyTypes);
@@ -142,7 +142,7 @@ namespace GIF_GIftIdeaForum
         }
     }
 
-    public abstract class Base{
+    public abstract class JobBehaviour{
         public void DebugLog(String msg)
         {
             System.Diagnostics.Debug.WriteLine("\nConsole Log:\n" + msg + "\n");
