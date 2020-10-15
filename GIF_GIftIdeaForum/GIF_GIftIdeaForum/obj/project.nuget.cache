@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "KBcZwKOF77r3Ukg1s8JvODxvDwj4ATlODYHJstcoKGd657A5QxXqmX7yb42yAAf9WRenIL+a3aqkKDicPZ92GQ==",
+  "dgSpecHash": "lMZP22Utpj3p7MQFRbT6NzVXrvH1gFRTujAee0O4RiY/F2mQH0jzlDEAVa1/FE9649MiXlLBC3X30iWeT2x3Wg==",
   "success": true,
-  "projectFilePath": "E:\\Users\\joshu\\Documents\\GitHub\\Gif---Gift-Idea-Forum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum.csproj",
+  "projectFilePath": "D:\\GitHub\\Gif---Gift-Idea-Forum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\joshu\\.nuget\\packages\\microsoft.aspnetcore.mvc.razor.extensions\\3.1.8\\microsoft.aspnetcore.mvc.razor.extensions.3.1.8.nupkg.sha512",
     "C:\\Users\\joshu\\.nuget\\packages\\microsoft.aspnetcore.mvc.razor.runtimecompilation\\3.1.8\\microsoft.aspnetcore.mvc.razor.runtimecompilation.3.1.8.nupkg.sha512",
@@ -13,9 +13,9 @@
     "C:\\Users\\joshu\\.nuget\\packages\\microsoft.codeanalysis.razor\\3.1.8\\microsoft.codeanalysis.razor.3.1.8.nupkg.sha512",
     "C:\\Users\\joshu\\.nuget\\packages\\microsoft.extensions.dependencymodel\\3.1.6\\microsoft.extensions.dependencymodel.3.1.6.nupkg.sha512",
     "C:\\Users\\joshu\\.nuget\\packages\\microsoft.netcore.platforms\\2.1.2\\microsoft.netcore.platforms.2.1.2.nupkg.sha512",
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.collections.immutable\\1.5.0\\system.collections.immutable.1.5.0.nupkg.sha512",
+    "C:\\Users\\joshu\\.nuget\\packages\\system.collections.immutable\\1.5.0\\system.collections.immutable.1.5.0.nupkg.sha512",
     "C:\\Users\\joshu\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512",
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.reflection.metadata\\1.6.0\\system.reflection.metadata.1.6.0.nupkg.sha512",
+    "C:\\Users\\joshu\\.nuget\\packages\\system.reflection.metadata\\1.6.0\\system.reflection.metadata.1.6.0.nupkg.sha512",
     "C:\\Users\\joshu\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.5.2\\system.runtime.compilerservices.unsafe.4.5.2.nupkg.sha512",
     "C:\\Users\\joshu\\.nuget\\packages\\system.text.encoding.codepages\\4.5.1\\system.text.encoding.codepages.4.5.1.nupkg.sha512",
     "C:\\Users\\joshu\\.nuget\\packages\\system.text.json\\4.7.2\\system.text.json.4.7.2.nupkg.sha512",
