@@ -19,6 +19,7 @@ namespace GIF_GIftIdeaForum.Pages
 
         public void OnGet()
         {
+            MainC.InitializeMainMethod(typeof(PrivacyModel));
         }
     }
 }

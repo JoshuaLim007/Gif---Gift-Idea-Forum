@@ -662,11 +662,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Users\\joshu\\Documents\\ProgramProjects\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum.csproj",
+      "projectUniqueName": "E:\\Users\\joshu\\Documents\\GitHub\\Gif---Gift-Idea-Forum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum.csproj",
       "projectName": "GIF_GIftIdeaForum",
-      "projectPath": "E:\\Users\\joshu\\Documents\\ProgramProjects\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum.csproj",
+      "projectPath": "E:\\Users\\joshu\\Documents\\GitHub\\Gif---Gift-Idea-Forum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum.csproj",
       "packagesPath": "C:\\Users\\joshu\\.nuget\\packages\\",
-      "outputPath": "E:\\Users\\joshu\\Documents\\ProgramProjects\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum\\obj\\",
+      "outputPath": "E:\\Users\\joshu\\Documents\\GitHub\\Gif---Gift-Idea-Forum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
