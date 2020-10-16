@@ -50,7 +50,7 @@ namespace GIF_GIftIdeaForum
     {
         private class MethodData
         {
-            public MethodInfo method;
+            public List<MethodInfo> method = new List<MethodInfo>();
             public BindToClass attribute;
             public object _class;
         }
@@ -60,6 +60,8 @@ namespace GIF_GIftIdeaForum
         }
         //private static List<Base> BaseScripts = new List<Base>();
         private static SortedList<float, MethodDataList> OrderedExecutionTimes = new SortedList<float, MethodDataList>();
+        public static Dictionary<Type, object> AllInstanced = new Dictionary<Type, object>();
+
         private static bool NewWeb { get; set; }
         private static void FindBases()
         {
@@ -74,10 +76,13 @@ namespace GIF_GIftIdeaForum
                 ConstructorInfo cType = type.GetConstructor(Type.EmptyTypes);
                 object _class = cType.Invoke(new object[] { });
 
+                AllInstanced.Add(type, _class);
+
                 BindToClass BindAttribute =
                         (BindToClass)Attribute.GetCustomAttribute(type, typeof(BindToClass));
                 ExecutionOrder ExecutionAttribute =
                     (ExecutionOrder)Attribute.GetCustomAttribute(type, typeof(ExecutionOrder));
+
                 if (ExecutionAttribute != null)
                 {
                     orderNum = ExecutionAttribute.orderTime;
@@ -93,7 +98,12 @@ namespace GIF_GIftIdeaForum
                     MethodData methodData = new MethodData();
                     methodData.attribute = BindAttribute;
                     var method = type.GetMethod("Run");
-                    methodData.method = method;
+                    methodData.method.Add(method);
+                    method = type.GetMethod("TaskRun");
+                    if (method != null)
+                    {
+                        methodData.method.Add(method);
+                    }
                     methodData._class = _class;
 
                     var _list = OrderedExecutionTimes[orderNum];
@@ -106,7 +116,14 @@ namespace GIF_GIftIdeaForum
                     MethodData methodData = new MethodData();
                     methodData.attribute = BindAttribute;
                     var method = type.GetMethod("Run");
-                    methodData.method = method;
+                    methodData.method.Add(method);
+                    method = type.GetMethod("TaskRun");
+
+                    if (method != null)
+                    {
+                        methodData.method.Add(method);
+                    }
+
                     methodData._class = _class;
                     methodDataList._datas.Add(methodData);
 
@@ -129,12 +146,18 @@ namespace GIF_GIftIdeaForum
                     {
                         if (methodData.attribute.parent == invokedFrom)
                         {
-                            methodData.method.Invoke(methodData._class, null);
+                            for (int d = 0; d < methodData.method.Count; d++)
+                            {
+                                methodData.method[d].Invoke(methodData._class, null);
+                            }
                         }
                     }
                     else
                     {
-                        methodData.method.Invoke(methodData._class, null);
+                        for (int d = 0; d < methodData.method.Count; d++)
+                        {
+                            methodData.method[d].Invoke(methodData._class, null);
+                        }
                     }
                 }
             }
@@ -158,6 +181,16 @@ namespace GIF_GIftIdeaForum
             System.Diagnostics.Debug.WriteLine("\nConsole Log:\n" + msg + "\n");
         }
         public abstract void Run();
+        public virtual Task TaskRun()
+        {
+            return null;
+        }
+        public T FindObjectOfType<T>()
+        {
+            object instance;
+            MainC.AllInstanced.TryGetValue(typeof(T), out instance);
+            return (T)Convert.ChangeType(instance, typeof(T));
+        }
     }
 
 }
