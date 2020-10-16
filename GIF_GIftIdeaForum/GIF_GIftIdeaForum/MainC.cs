@@ -9,6 +9,7 @@ using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
 using Microsoft.CodeAnalysis;
+using System.ComponentModel.DataAnnotations;
 
 /// <summary>
 /// DONT TOUCH THIS!!!!!!!
@@ -17,6 +18,15 @@ using Microsoft.CodeAnalysis;
 
 namespace GIF_GIftIdeaForum
 {
+    public class PresentIdeas
+    {
+        [Key]
+        public int Key { get; set; }
+        [Required]
+        public string Name { get; set; }
+        [Required]
+        public int UpVotes { get; set; }
+    }
     public class BindToClass : System.Attribute
     {
         public Type parent;
