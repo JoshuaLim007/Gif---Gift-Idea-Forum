@@ -1,21 +1,18 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Users\\joshu\\Documents\\GitHub\\Gif---Gift-Idea-Forum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum.csproj": {}
+    "D:\\GitHub\\Gif---Gift-Idea-Forum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum.csproj": {}
   },
   "projects": {
-    "E:\\Users\\joshu\\Documents\\GitHub\\Gif---Gift-Idea-Forum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum.csproj": {
+    "D:\\GitHub\\Gif---Gift-Idea-Forum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Users\\joshu\\Documents\\GitHub\\Gif---Gift-Idea-Forum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum.csproj",
+        "projectUniqueName": "D:\\GitHub\\Gif---Gift-Idea-Forum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum.csproj",
         "projectName": "GIF_GIftIdeaForum",
-        "projectPath": "E:\\Users\\joshu\\Documents\\GitHub\\Gif---Gift-Idea-Forum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum.csproj",
+        "projectPath": "D:\\GitHub\\Gif---Gift-Idea-Forum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum.csproj",
         "packagesPath": "C:\\Users\\joshu\\.nuget\\packages\\",
-        "outputPath": "E:\\Users\\joshu\\Documents\\GitHub\\Gif---Gift-Idea-Forum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum\\obj\\",
+        "outputPath": "D:\\GitHub\\Gif---Gift-Idea-Forum\\GIF_GIftIdeaForum\\GIF_GIftIdeaForum\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
           "C:\\Users\\joshu\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -64,7 +61,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.301\\RuntimeIdentifierGraph.json"
         }
       }
     }
