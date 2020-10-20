@@ -173,12 +173,18 @@ namespace GIF_GIftIdeaForum
             Execute(invokedFrom);
 
         }
+        public static T FindObjectOfType<T>()
+        {
+            object instance;
+            MainC.AllInstanced.TryGetValue(typeof(T), out instance);
+            return (T)Convert.ChangeType(instance, typeof(T));
+        }
     }
 
     public abstract class JobBehaviour{
         public void DebugLog(String msg)
         {
-            System.Diagnostics.Debug.WriteLine("\nConsole Log:\n" + msg + "\n");
+            System.Diagnostics.Debug.WriteLine(msg);
         }
         public abstract void Run();
         public virtual Task TaskRun()
@@ -187,9 +193,7 @@ namespace GIF_GIftIdeaForum
         }
         public T FindObjectOfType<T>()
         {
-            object instance;
-            MainC.AllInstanced.TryGetValue(typeof(T), out instance);
-            return (T)Convert.ChangeType(instance, typeof(T));
+            return MainC.FindObjectOfType<T>();
         }
     }
 
