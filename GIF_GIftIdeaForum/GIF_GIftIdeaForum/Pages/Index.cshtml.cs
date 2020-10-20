@@ -28,5 +28,7 @@ namespace GIF_GIftIdeaForum.Pages
         {
             MainC.InitializeMainMethod(typeof(IndexModel));
         }
+
+
     }
 }
