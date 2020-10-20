@@ -10,14 +10,15 @@ using GIF_GIftIdeaForum.Pages;
 
 namespace GIF_GIftIdeaForum.Jobs
 {
-    [ExecutionOrder(0)]
-    [BindToClass(typeof(IndexModel))]
-    public class SortDataSet : JobBehaviour
+    //[ExecutionOrder(0)]
+    //[BindToClass(typeof(IndexModel))]
+    /*
+     public class SortDataSet : JobBehaviour
     {
         public override void Run() //pulls the structs from database
         {
             var database = FindObjectOfType<DatabaseManager>();
-            var dataSet = database.GetGiftDataFromDataBase();
+            var dataSet = database.GetGiftDataFromDataBase().ToList();
             SortData_Main(ref dataSet);
             for (int i = 0; i < dataSet.Count; i++)
             {
@@ -73,4 +74,5 @@ namespace GIF_GIftIdeaForum.Jobs
             print(ref DataVotes, element);
         }
     }
+     */
 }
