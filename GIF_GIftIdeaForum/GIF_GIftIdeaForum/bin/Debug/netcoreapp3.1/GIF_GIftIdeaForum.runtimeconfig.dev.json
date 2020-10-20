@@ -1,8 +1,0 @@
-{
-  "runtimeOptions": {
-    "additionalProbingPaths": [
-      "C:\\Users\\stell\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\stell\\.nuget\\packages"
-    ]
-  }
-}
