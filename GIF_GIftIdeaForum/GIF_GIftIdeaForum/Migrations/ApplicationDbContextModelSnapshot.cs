@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GIF_GIftIdeaForum.Migrations
 {
-    [DbContext(typeof(PrimaryDatabase))]
+    [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -18,7 +18,7 @@ namespace GIF_GIftIdeaForum.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("GIF_GIftIdeaForum.GiftIdeasTable", b =>
+            modelBuilder.Entity("GIF_GIftIdeaForum.PresentIdeas", b =>
                 {
                     b.Property<int>("Key")
                         .ValueGeneratedOnAdd()
@@ -35,39 +35,6 @@ namespace GIF_GIftIdeaForum.Migrations
                     b.HasKey("Key");
 
                     b.ToTable("PresentIdeas");
-                });
-
-            modelBuilder.Entity("GIF_GIftIdeaForum.TagRelationTable", b =>
-                {
-                    b.Property<int>("RelationID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("GiftKey")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TagID")
-                        .HasColumnType("int");
-
-                    b.HasKey("RelationID");
-
-                    b.ToTable("TagRelations");
-                });
-
-            modelBuilder.Entity("GIF_GIftIdeaForum.TagTable", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("TagName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Tags");
                 });
 #pragma warning restore 612, 618
         }

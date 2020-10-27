@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GIF_GIftIdeaForum.Migrations
 {
-    [DbContext(typeof(PrimaryDatabase))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("20201016193807_AddProjectIdeasToDb")]
     partial class AddGiftIdeasToDb
     {

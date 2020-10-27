@@ -17,9 +17,9 @@ namespace GIF_GIftIdeaForum.Pages
             _logger = logger;
         }
 
-        public async Task OnGet()
+        public void OnGet()
         {
-            await MainC.InitializeMainMethod(typeof(PrivacyModel));
+            MainC.InitializeMainMethod(typeof(PrivacyModel));
         }
     }
 }
