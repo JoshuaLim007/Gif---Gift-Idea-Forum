@@ -12,21 +12,24 @@ namespace GIF_GIftIdeaForum.Pages
 {
     public class IndexModel : PageModel
     {
-        private static ApplicationDbContext dbContext { get; set; }
+        private static PrimaryDatabase _GiftIdeaDataContext { get; set; }
+
+
         private readonly ILogger<IndexModel> _logger;
-        public IndexModel(ILogger<IndexModel> logger, ApplicationDbContext db)
+        public IndexModel(ILogger<IndexModel> logger, PrimaryDatabase db)
         {
-            dbContext = db;
+            _GiftIdeaDataContext = db;
+
             _logger = logger;
         }
-        public static ApplicationDbContext GetApplicationDbContext()
+        public static PrimaryDatabase GetApplicationDbContext()
         {
-            return dbContext;
+            return _GiftIdeaDataContext;
         }
 
-        public void OnGet()
+        public async Task OnGet()
         {
-            MainC.InitializeMainMethod(typeof(IndexModel));
+            await MainC.InitializeMainMethod(typeof(IndexModel));
         }
 
 

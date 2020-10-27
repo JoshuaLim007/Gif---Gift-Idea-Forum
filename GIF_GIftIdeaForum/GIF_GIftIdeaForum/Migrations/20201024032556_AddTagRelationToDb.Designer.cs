@@ -3,14 +3,16 @@ using GIF_GIftIdeaForum.Jobs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GIF_GIftIdeaForum.Migrations
 {
     [DbContext(typeof(PrimaryDatabase))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201024032556_AddTagRelationToDb")]
+    partial class AddTagRelationToDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

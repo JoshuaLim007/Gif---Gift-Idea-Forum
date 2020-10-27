@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.IO;
 using Microsoft.CodeAnalysis;
 using System.ComponentModel.DataAnnotations;
+using System.Linq.Expressions;
 
 /// <summary>
 /// DONT TOUCH THIS!!!!!!!
@@ -18,7 +19,19 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GIF_GIftIdeaForum
 {
-    public class PresentIdeas
+    public class TagRelationTable {
+        [Key]
+        public int RelationID { get; set; }
+        public int TagID { get;set;}
+        public int GiftKey { get; set; }
+    }
+    public class TagTable { 
+        [Key]
+        public int ID { get; set; }
+        public string TagName { get; set; }
+    
+    }
+    public class GiftIdeasTable
     {
         [Key]
         public int Key { get; set; }
@@ -27,22 +40,20 @@ namespace GIF_GIftIdeaForum
         [Required]
         public int UpVotes { get; set; }
     }
-    public class BindToClass : System.Attribute
-    {
-        public Type parent;
 
-        public BindToClass(Type parent)
-        {
-            this.parent = parent;
-        }
-    }
-    public class ExecutionOrder : System.Attribute
+    public static class ExtensionMethods
     {
-        public float orderTime;
-
-        public ExecutionOrder(float orderTime)
+        public static async Task<object> InvokeAsync(this MethodInfo @this, object obj, params object[] parameters)
         {
-            this.orderTime = orderTime;
+            var task = (Task)@this.Invoke(obj, parameters);
+            if (task != null)
+            {
+                await task.ConfigureAwait(false);
+                var resultProperty = task.GetType().GetProperty("Result");
+                return resultProperty.GetValue(task);
+            }
+
+            return null;
         }
     }
 
@@ -133,7 +144,7 @@ namespace GIF_GIftIdeaForum
 
             }
         }
-        private static void Execute(Type invokedFrom)
+        private static async Task Execute(Type invokedFrom)
         {
             foreach (var scripts in OrderedExecutionTimes)
             {
@@ -148,7 +159,18 @@ namespace GIF_GIftIdeaForum
                         {
                             for (int d = 0; d < methodData.method.Count; d++)
                             {
-                                methodData.method[d].Invoke(methodData._class, null);
+                                var name = methodData.method[d].Name;
+                                switch (name)
+                                {
+                                    case ("TaskRun"):
+
+                                        await methodData.method[d].InvokeAsync(methodData._class, null);
+
+                                        break;
+                                    case ("Run"):
+                                        methodData.method[d].Invoke(methodData._class, null);
+                                        break;
+                                }
                             }
                         }
                     }
@@ -156,13 +178,23 @@ namespace GIF_GIftIdeaForum
                     {
                         for (int d = 0; d < methodData.method.Count; d++)
                         {
-                            methodData.method[d].Invoke(methodData._class, null);
+                            var name = methodData.method[d].Name;
+                            switch (name)
+                            {
+                                case ("TaskRun"):
+                                    await methodData.method[d].InvokeAsync(methodData._class, null);
+
+                                    break;
+                                case ("Run"):
+                                    methodData.method[d].Invoke(methodData._class, null);
+                                    break;
+                            }
                         }
                     }
                 }
             }
         }
-        public static void InitializeMainMethod(Type invokedFrom)
+        public static async Task InitializeMainMethod(Type invokedFrom)
         {
             if (NewWeb == false)
             {
@@ -170,7 +202,7 @@ namespace GIF_GIftIdeaForum
                 FindBases();
                 NewWeb = true;
             }
-            Execute(invokedFrom);
+            await Execute(invokedFrom);
 
         }
         public static T FindObjectOfType<T>()
@@ -181,12 +213,32 @@ namespace GIF_GIftIdeaForum
         }
     }
 
+    public class BindToClass : System.Attribute
+    {
+        public Type parent;
+
+        public BindToClass(Type parent)
+        {
+            this.parent = parent;
+        }
+    }
+    public class ExecutionOrder : System.Attribute
+    {
+        public float orderTime;
+
+        public ExecutionOrder(float orderTime)
+        {
+            this.orderTime = orderTime;
+        }
+    }
     public abstract class JobBehaviour{
-        public void DebugLog(String msg)
+        public void DebugLog(object msg)
         {
             System.Diagnostics.Debug.WriteLine(msg);
         }
         public abstract void Run();
+
+
         public virtual Task TaskRun()
         {
             return null;
