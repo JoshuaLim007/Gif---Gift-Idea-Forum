@@ -1,0 +1,14 @@
+﻿@inject Microsoft.JSInterop.IJSRuntime JS;
+@code {
+
+    async Task GenereateList()
+    {
+        await GIF_GIftIdeaForum.Jobs.GiftLister.DisplayItems(JS);
+    }
+
+}
+
+
+<div>
+    <button @onclick="GenereateList">BlazorButton</button>
+</div>

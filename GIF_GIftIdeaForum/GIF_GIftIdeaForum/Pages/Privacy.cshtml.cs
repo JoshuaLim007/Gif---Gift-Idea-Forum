@@ -19,7 +19,7 @@ namespace GIF_GIftIdeaForum.Pages
 
         public async Task OnGet()
         {
-            await MainC.InitializeMainMethod(typeof(PrivacyModel));
+            await MainC.Start(typeof(PrivacyModel));
         }
     }
 }

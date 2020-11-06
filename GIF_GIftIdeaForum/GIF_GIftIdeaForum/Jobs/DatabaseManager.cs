@@ -16,8 +16,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace GIF_GIftIdeaForum.Jobs
 {
-    [ExecutionOrder(-5)]
-    [BindToClass(typeof(IndexModel))]
+    [ExecutionOrder(-10)]
     public class DatabaseManager : JobBehaviour
     {
         public static class Debug
@@ -50,13 +49,16 @@ namespace GIF_GIftIdeaForum.Jobs
                 float da = 0;
                 foreach (var item in items)
                 {
-                    var pos = (tags.Length-1) * Math.Sin(index) + (tags.Length-1);
+                    var pos = (tags.Length-1) * 0.5f * Math.Sin(index) + (tags.Length-1) * 0.5f;
+
                     var randomNum = MathF.Abs((MathF.Sin(da) + 1) * MathF.Log(da));
                     randomNum = MathF.Pow(randomNum, 3);
                     randomNum /= 10;
 
+
                     da += 1;
                     database.AddToDatabase(item, tags[(int)Math.Round(pos)].TagName, (int)randomNum);
+                    index++;
                 }
             }
             public static void ClearDebugDatas()
@@ -90,7 +92,7 @@ namespace GIF_GIftIdeaForum.Jobs
                 GenerateItemsToDb();
             }
         }
-
+        
         //adding new things to dataset
         //1:33:16 https://www.youtube.com/watch?v=C5cnZ-gZy2I&t=4800s
 
@@ -98,10 +100,17 @@ namespace GIF_GIftIdeaForum.Jobs
         //Dictionary<string, int> tagsDictionary;
         public override void Run()
         {
-            giftIdeasDbContext = IndexModel.GetApplicationDbContext();
+            giftIdeasDbContext = PrimaryDatabase;
             Debug.database = this;
-            //Debug.GenerateItemsToDb();
-            //Debug.ClearDebugDatas();
+        }
+
+        public List<TagTable> RetrieveTags()
+        {
+            return giftIdeasDbContext.Tags.ToList<TagTable>();
+        }
+        public async Task<List<TagTable>> RetrieveTagsAsync()
+        {
+            return await giftIdeasDbContext.Tags.ToListAsync<TagTable>();
         }
 
         public async Task AddToDatabaseAsync(string name, string tag, int StartingVotes = 0)
@@ -149,7 +158,6 @@ namespace GIF_GIftIdeaForum.Jobs
             }
         }
         public void AddToDatabase(string name, string tag, int StartingVotes = 0) {
-
             var tagsDictionary = giftIdeasDbContext.Tags.ToDictionary(a => a.TagName, o => o.ID);
 
             var existsTag = tagsDictionary.TryGetValue(tag, out int tagID);
