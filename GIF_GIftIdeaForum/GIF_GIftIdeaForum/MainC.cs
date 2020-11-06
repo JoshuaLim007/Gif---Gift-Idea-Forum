@@ -11,6 +11,7 @@ using System.IO;
 using Microsoft.CodeAnalysis;
 using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
+using Microsoft.JSInterop;
 
 /// <summary>
 /// DONT TOUCH THIS!!!!!!!
@@ -19,6 +20,7 @@ using System.Linq.Expressions;
 
 namespace GIF_GIftIdeaForum
 {
+    #region Tables
     public class TagRelationTable {
         [Key]
         public int RelationID { get; set; }
@@ -40,6 +42,7 @@ namespace GIF_GIftIdeaForum
         [Required]
         public int UpVotes { get; set; }
     }
+    #endregion
 
     public static class ExtensionMethods
     {
@@ -56,7 +59,6 @@ namespace GIF_GIftIdeaForum
             return null;
         }
     }
-
     public static class MainC
     {
         private class MethodData
@@ -194,16 +196,19 @@ namespace GIF_GIftIdeaForum
                 }
             }
         }
-        public static async Task InitializeMainMethod(Type invokedFrom)
+        public static async Task Start(Type invokedFrom)
         {
-            if (NewWeb == false)
+            if (AppController.previousPage != invokedFrom)
             {
-                System.Diagnostics.Debug.WriteLine("\nConsole Log:\n" + "Start initialized" + "\n");
-                FindBases();
-                NewWeb = true;
+                AppController.previousPage = invokedFrom;
+                if (NewWeb == false)
+                {
+                    System.Diagnostics.Debug.WriteLine("\nConsole Log:\n" + "Start initialized" + "\n");
+                    FindBases();
+                    NewWeb = true;
+                }
+                await Execute(invokedFrom);
             }
-            await Execute(invokedFrom);
-
         }
         public static T FindObjectOfType<T>()
         {
@@ -213,6 +218,7 @@ namespace GIF_GIftIdeaForum
         }
     }
 
+    #region Framework
     public class BindToClass : System.Attribute
     {
         public Type parent;
@@ -231,13 +237,21 @@ namespace GIF_GIftIdeaForum
             this.orderTime = orderTime;
         }
     }
-    public abstract class JobBehaviour{
+
+    public static class AppController
+    {
+        public static Type previousPage;
+    }
+    public class Behaviour
+    {
+        public static PrimaryDatabase PrimaryDatabase;
+    }
+    public abstract class JobBehaviour : Behaviour{
         public void DebugLog(object msg)
         {
             System.Diagnostics.Debug.WriteLine(msg);
         }
         public abstract void Run();
-
 
         public virtual Task TaskRun()
         {
@@ -248,5 +262,5 @@ namespace GIF_GIftIdeaForum
             return MainC.FindObjectOfType<T>();
         }
     }
-
+    #endregion
 }

@@ -12,24 +12,22 @@ namespace GIF_GIftIdeaForum.Pages
 {
     public class IndexModel : PageModel
     {
-        private static PrimaryDatabase _GiftIdeaDataContext { get; set; }
-
+        //private static PrimaryDatabase _GiftIdeaDataContext { get; set; }
 
         private readonly ILogger<IndexModel> _logger;
         public IndexModel(ILogger<IndexModel> logger, PrimaryDatabase db)
         {
-            _GiftIdeaDataContext = db;
-
+            Behaviour.PrimaryDatabase = db;
             _logger = logger;
-        }
-        public static PrimaryDatabase GetApplicationDbContext()
-        {
-            return _GiftIdeaDataContext;
         }
 
         public async Task OnGet()
         {
-            await MainC.InitializeMainMethod(typeof(IndexModel));
+            await MainC.Start(typeof(IndexModel));
+
+            //GiftLister.SetTag("Christmas Day");
+            //Response.Redirect("/GiftsPage");
+
         }
 
 

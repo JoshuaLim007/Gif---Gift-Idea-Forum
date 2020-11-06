@@ -1,0 +1,27 @@
+﻿@page
+@model GIF_GIftIdeaForum.Pages.GiftsPageModel
+@{
+    ViewData["Title"] = "Gifts List";
+}
+
+<html>
+
+<body>
+    <div>
+        <!--
+    <form asp-page-handler="Listitems" method="post">
+    <button>Listitems</button>
+    </form> 
+    -->
+
+    @(await Html.RenderComponentAsync<GIF_GIftIdeaForum.Components.BlazorComponent>(RenderMode.ServerPrerendered))
+
+    </div>
+
+    <div class = "GiftContainer">
+        Gift Container
+    </div>
+
+</body>
+
+</html>
