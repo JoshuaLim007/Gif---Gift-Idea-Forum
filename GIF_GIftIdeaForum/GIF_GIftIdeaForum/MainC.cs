@@ -12,6 +12,7 @@ using Microsoft.CodeAnalysis;
 using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 using Microsoft.JSInterop;
+using sun.tools.tree;
 
 /// <summary>
 /// DONT TOUCH THIS!!!!!!!
@@ -165,7 +166,6 @@ namespace GIF_GIftIdeaForum
                                 switch (name)
                                 {
                                     case ("TaskRun"):
-
                                         await methodData.method[d].InvokeAsync(methodData._class, null);
 
                                         break;
@@ -196,11 +196,11 @@ namespace GIF_GIftIdeaForum
                 }
             }
         }
-        public static async Task Start(Type invokedFrom)
+        public static async Task Start(Type invokedFrom, object parentInstance)
         {
-            if (AppController.previousPage != invokedFrom)
+            if (Behaviour.previousPage != invokedFrom)
             {
-                AppController.previousPage = invokedFrom;
+                Behaviour.previousPage = invokedFrom;
                 if (NewWeb == false)
                 {
                     System.Diagnostics.Debug.WriteLine("\nConsole Log:\n" + "Start initialized" + "\n");
@@ -238,12 +238,9 @@ namespace GIF_GIftIdeaForum
         }
     }
 
-    public static class AppController
-    {
-        public static Type previousPage;
-    }
     public class Behaviour
     {
+        public static Type previousPage;
         public static PrimaryDatabase PrimaryDatabase;
     }
     public abstract class JobBehaviour : Behaviour{
