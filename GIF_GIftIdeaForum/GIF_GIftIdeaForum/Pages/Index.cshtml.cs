@@ -23,11 +23,11 @@ namespace GIF_GIftIdeaForum.Pages
 
         public async Task OnGet()
         {
-            await MainC.Start(typeof(IndexModel));
+            await MainC.Start(typeof(IndexModel), this);
+            GiftLister.instanceParent = this;
 
-            //GiftLister.SetTag("Christmas Day");
-            //Response.Redirect("/GiftsPage");
 
+            //GiftLister.GoToSubPage("Christmas Day");
         }
 
 

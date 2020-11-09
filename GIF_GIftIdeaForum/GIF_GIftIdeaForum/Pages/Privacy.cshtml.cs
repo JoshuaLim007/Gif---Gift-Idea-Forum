@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GIF_GIftIdeaForum.Jobs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -19,7 +20,7 @@ namespace GIF_GIftIdeaForum.Pages
 
         public async Task OnGet()
         {
-            await MainC.Start(typeof(PrivacyModel));
+            await MainC.Start(typeof(PrivacyModel), this);
         }
     }
 }

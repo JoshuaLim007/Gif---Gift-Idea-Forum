@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using GIF_GIftIdeaForum.Jobs;
 using java.lang;
@@ -22,9 +23,8 @@ namespace GIF_GIftIdeaForum.Pages
         }
         public async Task OnGet()
         {
-            await MainC.Start(typeof(GiftsPageModel));
+            await MainC.Start(typeof(GiftsPageModel), this);
         }
-
         public async Task OnPostListitems(IJSRuntime jS)
         {
             await GiftLister.DisplayItems(jS);

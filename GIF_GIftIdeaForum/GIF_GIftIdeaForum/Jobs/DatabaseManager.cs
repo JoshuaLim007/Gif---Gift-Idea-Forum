@@ -123,14 +123,13 @@ namespace GIF_GIftIdeaForum.Jobs
 
                 var items = await RetrieveDataWithTagAsync(tag);
 
-                foreach (var item in items)
-                {
-                    if(item.GetName() == name)
+                Parallel.ForEach(items, item => {
+                    if (item.GetName() == name)
                     {
                         DebugLog("Item already exists");
                         return;
                     }
-                }
+                });
 
 
                 GiftIdeasTable giftIdea = new GiftIdeasTable()
@@ -164,15 +163,14 @@ namespace GIF_GIftIdeaForum.Jobs
             if (existsTag)
             {
                 var items = RetrieveDataWithTag(tag);
-                foreach (var item in items)
-                {
-                    if(item.GetName() == name)
+
+                Parallel.ForEach(items, item => {
+                    if (item.GetName() == name)
                     {
                         DebugLog("Item already exists");
                         return;
                     }
-                }
-
+                });
 
                 GiftIdeasTable giftIdea = new GiftIdeasTable()
                 {
@@ -276,10 +274,9 @@ namespace GIF_GIftIdeaForum.Jobs
         private string Name;
 
         public int UpVotes { get; private set; }
-
+        public int ID { get; private set; }
 
         private readonly string inTag;
-        private readonly int Index;
         public TagRelationTable trt { get; private set; }
         private PrimaryDatabase dataBase;
         public GiftIdeasTable dataBaseObject { get; private set; }
@@ -289,7 +286,7 @@ namespace GIF_GIftIdeaForum.Jobs
             inTag = Tag;
             this.Name = Name;
             UpVotes = Upvotes;
-            Index = key;
+            ID = key;
             this.dataBase = dataBase;
             dataBaseObject = dataObject;
             trt = tagKey;
@@ -299,23 +296,23 @@ namespace GIF_GIftIdeaForum.Jobs
         {
             return Name;
         }
-        public void IncreaseVotes()
+        public async Task IncreaseVotes()
         {
             UpVotes++;
             dataBaseObject.UpVotes = UpVotes;
-            dataBase.SaveChanges();
+            await dataBase.SaveChangesAsync();
         }
-        public void DecreaseVotes()
+        public async Task DecreaseVotes()
         {
             UpVotes--;
             dataBaseObject.UpVotes = UpVotes;
-            dataBase.SaveChanges();
+            await dataBase.SaveChangesAsync();
         }
-        public void DeleteFromDb()
+        public async Task DeleteFromDb()
         {
             dataBase.TagRelations.Remove(trt);
             dataBase.PresentIdeas.Remove(dataBaseObject);
-            dataBase.SaveChanges();
+            await dataBase.SaveChangesAsync();
         }
 
         public int CompareTo(Gift other)

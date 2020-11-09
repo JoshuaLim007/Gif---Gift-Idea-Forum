@@ -12,6 +12,8 @@ using Microsoft.CodeAnalysis;
 using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 using Microsoft.JSInterop;
+using sun.tools.tree;
+using System.Diagnostics;
 
 /// <summary>
 /// DONT TOUCH THIS!!!!!!!
@@ -82,10 +84,10 @@ namespace GIF_GIftIdeaForum
             Assembly assembly = Assembly.GetExecutingAssembly();
             Type[] types = assembly.GetTypes();
             IEnumerable<Type> subclasses = types.Where(t => t.IsSubclassOf(parentType));
-
             float orderNum = 0;
-            foreach (Type type in subclasses)
+            foreach (var type in subclasses)
             {
+
                 ConstructorInfo cType = type.GetConstructor(Type.EmptyTypes);
                 object _class = cType.Invoke(new object[] { });
 
@@ -142,9 +144,8 @@ namespace GIF_GIftIdeaForum
 
                     OrderedExecutionTimes.Add(orderNum, methodDataList);
                 }
-
-
             }
+
         }
         private static async Task Execute(Type invokedFrom)
         {
@@ -165,7 +166,6 @@ namespace GIF_GIftIdeaForum
                                 switch (name)
                                 {
                                     case ("TaskRun"):
-
                                         await methodData.method[d].InvokeAsync(methodData._class, null);
 
                                         break;
@@ -196,15 +196,21 @@ namespace GIF_GIftIdeaForum
                 }
             }
         }
-        public static async Task Start(Type invokedFrom)
+        public static async Task Start(Type invokedFrom, object parentInstance)
         {
-            if (AppController.previousPage != invokedFrom)
+            if (Behaviour.previousPage != invokedFrom)
             {
-                AppController.previousPage = invokedFrom;
+                Behaviour.previousPage = invokedFrom;
                 if (NewWeb == false)
                 {
-                    System.Diagnostics.Debug.WriteLine("\nConsole Log:\n" + "Start initialized" + "\n");
+                    Debug.Log("\nConsole Log:\n" + "Start initialized" + "\n");
+
+                    //Stopwatch stopwatch = new Stopwatch();
+                    //stopwatch.Start();
                     FindBases();
+                    //stopwatch.Stop();
+                    //Debug.WriteLine(stopwatch.ElapsedTicks);
+
                     NewWeb = true;
                 }
                 await Execute(invokedFrom);
@@ -219,6 +225,13 @@ namespace GIF_GIftIdeaForum
     }
 
     #region Framework
+    public static class Debug
+    {
+        public static void Log(object msg)
+        {
+            System.Diagnostics.Debug.WriteLine(msg);
+        }
+    }
     public class BindToClass : System.Attribute
     {
         public Type parent;
@@ -238,12 +251,9 @@ namespace GIF_GIftIdeaForum
         }
     }
 
-    public static class AppController
-    {
-        public static Type previousPage;
-    }
     public class Behaviour
     {
+        public static Type previousPage;
         public static PrimaryDatabase PrimaryDatabase;
     }
     public abstract class JobBehaviour : Behaviour{
