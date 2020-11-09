@@ -25,6 +25,9 @@ namespace GIF_GIftIdeaForum.Pages
         {
             await MainC.Start(typeof(IndexModel), this);
             GiftLister.instanceParent = this;
+
+
+            //GiftLister.GoToSubPage("Christmas Day");
         }
 
 

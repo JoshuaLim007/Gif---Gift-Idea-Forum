@@ -1,8 +1,10 @@
 ﻿using com.sun.tools.@internal.ws.processor.model;
 using com.sun.tools.javac.jvm;
 using GIF_GIftIdeaForum.Pages;
+using java.lang;
 using javax.jws;
 using javax.xml.ws;
+using jdk.nashorn.@internal.ir;
 using jdk.nashorn.@internal.scripts;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,6 +12,7 @@ using Microsoft.JSInterop;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -50,6 +53,19 @@ namespace GIF_GIftIdeaForum.Jobs
         {
             GiftLister.SetTag(tag);
             instanceParent.Response.Redirect("/GiftsPage");
+        }
+
+        [JSInvokableAttribute("CallVotes")]
+        public static async Task IncreaseVotes(int id)
+        {
+            foreach (var item in Items)
+            {
+                if (item.ID == id)
+                {
+                    await item.IncreaseVotes();
+                    return ;
+                }
+            }
         }
     }
 }
