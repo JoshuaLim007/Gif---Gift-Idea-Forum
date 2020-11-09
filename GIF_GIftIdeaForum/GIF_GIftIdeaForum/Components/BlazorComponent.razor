@@ -1,14 +1,17 @@
 ﻿@inject Microsoft.JSInterop.IJSRuntime JS;
 @code {
 
+    protected override void OnInitialized()
+    {
+        GenereateList();
+    }
+
     async Task GenereateList()
     {
         await GIF_GIftIdeaForum.Jobs.GiftLister.DisplayItems(JS);
     }
-
 }
 
-
 <div>
-    <button @onclick="GenereateList">BlazorButton</button>
+    <button @onclick="GenereateList">Show Next Five</button>
 </div>
