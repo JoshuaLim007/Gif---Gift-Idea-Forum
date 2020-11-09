@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GIF_GIftIdeaForum.Jobs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -17,9 +18,9 @@ namespace GIF_GIftIdeaForum.Pages
             _logger = logger;
         }
 
-        public void OnGet()
+        public async Task OnGet()
         {
-            MainC.InitializeMainMethod(typeof(PrivacyModel));
+            await MainC.Start(typeof(PrivacyModel), this);
         }
     }
 }
