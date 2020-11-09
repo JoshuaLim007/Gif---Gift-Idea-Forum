@@ -8,51 +8,32 @@
 <html>
 <head>
     <title>GIF - Gift Idea Forum</title>
-    <meta name="viewport" content="width=device-width">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="site.css">
-
-    <script>
-
-    </script>
+    <script src="~/js/site.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <style>
-        body, html {
-            height: 100%
-        }
-
-        .headertext {
-            color: #32373a;
-        }
-
-        
     </style>
 </head>
 
 <body>
-    <div class="parallax">
-        <div id="group1" class="parallax__group">
-            <div class="parallax__layer parallax__layer--base">
-                <div>
-                    <!--<h1 class="GIFtitle">GIF</h1>
-                    <div class="GIFtitle">GIF</div>
-                    -->
-                    <h1 class="GIFtitle">GIF</h1>
-                    <p class="GIFpara">Gift Idea Forum</p>
-                    <form>
-                        <input type="text" name="search" placeholder="Search" />
-                    </form>
-                    <buttton class="button">
-                        <img src="/Images/click scroll icon2.png" width="50" height="50">
-                    </buttton>
-                </div>
-            </div>
-        </div>
-        <div id="group2" class="parallax__group">
-            <div class="parallax__layer parallax__layer--base">
-                <div class="title">Sub pages</div>
-            </div>
-        </div>
+    <div id="GIFhomepage">
+        <h1 class="Bigtitle">GIF</h1>
+        <h3 class="Smalltitle">Gift Idea Forum</h3>
+        <form>
+            <input type="text" name="search" placeholder="Search" />
+        </form>
+        <a href="#GIFeventpage" class="scrollbutt">
+            <img src="/Images/click scroll icon2.png" width="50" height="50">
+        </a>
+    </div>
+    <div id="GIFeventpage">
+        <h1 class="Eventtitle">Events</h1>
+        <form>
+            <input />
+        </form>
+        <button class="Eventbutton"style="vertical-align:middle"><span>Event Button</span></button>
     </div>
 </body>
 </html>
