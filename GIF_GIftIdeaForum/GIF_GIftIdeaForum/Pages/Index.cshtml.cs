@@ -12,6 +12,7 @@ namespace GIF_GIftIdeaForum.Pages
 {
     public class IndexModel : PageModel
     {
+        public static IndexModel instance{ get; private set; }
         //private static PrimaryDatabase _GiftIdeaDataContext { get; set; }
 
         private readonly ILogger<IndexModel> _logger;
@@ -19,17 +20,13 @@ namespace GIF_GIftIdeaForum.Pages
         {
             Behaviour.PrimaryDatabase = db;
             _logger = logger;
+            instance = this;
         }
 
         public async Task OnGet()
         {
             await MainC.Start(typeof(IndexModel), this);
-            GiftLister.instanceParent = this;
-
-
-            //GiftLister.GoToSubPage("Christmas Day");
+            await GiftLister.GoToSubPage("Christmas Day");
         }
-
-
     }
 }

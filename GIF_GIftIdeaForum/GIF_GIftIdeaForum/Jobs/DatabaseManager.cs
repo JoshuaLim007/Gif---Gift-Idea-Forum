@@ -4,22 +4,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
-using System.Numerics;
-using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using System.Collections;
-using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using Azure.Storage.Blobs;
+using Azure.Core;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage;
 
 namespace GIF_GIftIdeaForum.Jobs
 {
     [ExecutionOrder(-10)]
     public class DatabaseManager : JobBehaviour
     {
-        public static class Debug
+        public static class DataDebug
         {
             public static DatabaseManager database;
             public static void GenerateTagsToDb()
@@ -57,34 +53,38 @@ namespace GIF_GIftIdeaForum.Jobs
 
 
                     da += 1;
-                    database.AddToDatabase(item, tags[(int)Math.Round(pos)].TagName, (int)randomNum);
+                    database.AddToDatabaseAsync(item, tags[(int)Math.Round(pos)].TagName, null, (int)randomNum);
                     index++;
                 }
             }
-            public static void ClearDebugDatas()
+            public static async Task ClearDebugDatas()
             {
                 string[] holidays = System.IO.File.ReadAllLines("wwwroot/Debug/Holidays.txt");
                 var debugItems = System.IO.File.ReadAllLines("wwwroot/Debug/RandomItems.txt").ToHashSet();
-                var DeleteThese = database.giftIdeasDbContext.Tags.ToDictionary(a=>a.TagName, a => a);
+                var DeleteThese = await database.giftIdeasDbContext.Tags.ToDictionaryAsync(a=>a.TagName, a => a);
 
                 foreach (var holdiday in holidays)
                 {
-                    var thing = database.RetrieveDataWithTag(holdiday);
-                    foreach (var giftIdeas in thing)
+                    var thing = await database.RetrieveDataWithTagAsync(holdiday);
+                    if (thing != null)
                     {
-                        if (debugItems.Contains(giftIdeas.GetName()))
+                        foreach (var giftIdeas in thing)
                         {
-                            giftIdeas.DeleteFromDb();
-                        }
-                        else
-                        {
-                            DeleteThese.Remove(holdiday);
+                            if (debugItems.Contains(giftIdeas.GetName()))
+                            {
+                                await giftIdeas.DeleteFromDb();
+                            }
+                            else
+                            {
+                                DeleteThese.Remove(holdiday);
+                            }
                         }
                     }
+
                 }
 
                 database.giftIdeasDbContext.Tags.RemoveRange(DeleteThese.Values);
-                database.giftIdeasDbContext.SaveChanges();
+                await database.giftIdeasDbContext.SaveChangesAsync();
             }
             public static void GenerateRandomData()
             {
@@ -98,45 +98,67 @@ namespace GIF_GIftIdeaForum.Jobs
 
         private PrimaryDatabase giftIdeasDbContext;
         //Dictionary<string, int> tagsDictionary;
+
         public override void Run()
         {
             giftIdeasDbContext = PrimaryDatabase;
-            Debug.database = this;
+            DataDebug.database = this;
+            //DataDebug.GenerateTagsToDb();
+        }
+        public override async Task TaskRun()
+        {
+            var dd = new DirectoryInfo("wwwroot/Images");
+            var fileInfo = dd.GetFiles().Where(f => f.Name == "azureBlobTest.jpg").First();
+            await AddToDatabaseAsync("Ball", "Valentine's Day", fileInfo, 0); 
+
+            /*
+            if (fileInfo == null)
+            {
+                DebugConsole.Log("No Image Found");
+            }
+            else
+            {
+                await UploadImageToBlob(fileInfo);
+            }
+            var images = await GetImagesFromBlob();
+            foreach (var item in images)
+            {
+                DebugConsole.Log(item.Uri);
+            }
+            */
         }
 
-        public List<TagTable> RetrieveTags()
-        {
-            return giftIdeasDbContext.Tags.ToList<TagTable>();
-        }
         public async Task<List<TagTable>> RetrieveTagsAsync()
         {
             return await giftIdeasDbContext.Tags.ToListAsync<TagTable>();
         }
 
-        public async Task AddToDatabaseAsync(string name, string tag, int StartingVotes = 0)
+
+        public async Task AddToDatabaseAsync(string name, string tag, FileInfo image, int StartingVotes = 0)
         {
             var tagsDictionary = await giftIdeasDbContext.Tags.ToDictionaryAsync(a => a.TagName, o => o.ID);
-
             var existsTag = tagsDictionary.TryGetValue(tag, out int tagID);
             if (existsTag)
             {
-
                 var items = await RetrieveDataWithTagAsync(tag);
-
-                Parallel.ForEach(items, item => {
+                foreach (var item in items)
+                {
                     if (item.GetName() == name)
                     {
-                        DebugLog("Item already exists");
+                        DebugConsole.Log("Item already exists");
                         return;
                     }
-                });
+                }
 
+                var uri = await UploadImageToBlob(image);
 
                 GiftIdeasTable giftIdea = new GiftIdeasTable()
                 {
                     Name = name,
                     UpVotes = StartingVotes,
+                    ImageURI = uri.ToString()
                 };
+
                 await giftIdeasDbContext.PresentIdeas.AddAsync(giftIdea);
                 await giftIdeasDbContext.SaveChangesAsync();
 
@@ -153,74 +175,7 @@ namespace GIF_GIftIdeaForum.Jobs
             }
             else
             {
-                DebugLog("No Tag Found");
-            }
-        }
-        public void AddToDatabase(string name, string tag, int StartingVotes = 0) {
-            var tagsDictionary = giftIdeasDbContext.Tags.ToDictionary(a => a.TagName, o => o.ID);
-
-            var existsTag = tagsDictionary.TryGetValue(tag, out int tagID);
-            if (existsTag)
-            {
-                var items = RetrieveDataWithTag(tag);
-
-                Parallel.ForEach(items, item => {
-                    if (item.GetName() == name)
-                    {
-                        DebugLog("Item already exists");
-                        return;
-                    }
-                });
-
-                GiftIdeasTable giftIdea = new GiftIdeasTable()
-                {
-                    Name = name,
-                    UpVotes = StartingVotes,
-                };
-                giftIdeasDbContext.PresentIdeas.Add(giftIdea);
-                giftIdeasDbContext.SaveChanges();
-
-                var justAddedItem = giftIdeasDbContext.Entry(giftIdea).GetDatabaseValues();
-
-                var key = giftIdea.Key;
-                TagRelationTable tagRelationTable = new TagRelationTable()
-                {
-                    GiftKey = key,
-                    TagID = tagID
-                };
-                giftIdeasDbContext.TagRelations.Add(tagRelationTable);
-                giftIdeasDbContext.SaveChanges();
-            }
-            else
-            {
-                DebugLog("No Tag Found");
-            }
-        }
-
-        public List<Gift> RetrieveDataWithTag(string tag)
-        {
-            var ob = giftIdeasDbContext.Tags.ToDictionary(a => a.TagName, o => o.ID);
-            var existsTag = ob.TryGetValue(tag, out int tagID);
-            if (existsTag)
-            {
-                var tagRel = giftIdeasDbContext.TagRelations.Where(a=>a.TagID == tagID).ToArray();
-
-                var list = new List<Gift>();
-
-                for (int i = 0; i < tagRel.Length; i++)
-                {
-                    int key = tagRel[i].GiftKey;
-                    var thing = giftIdeasDbContext.PresentIdeas.Find(key);
-
-                    Gift temp = new Gift(thing.Name, tag, thing.UpVotes, key, giftIdeasDbContext, thing, tagRel[i]);
-                    list.Add(temp);
-                }
-                return list;
-            }
-            else
-            {
-                DebugLog("No Tag Found");
-                return null;
+                DebugConsole.Log("No Tag Found");
             }
         }
         public async Task<List<Gift>> RetrieveDataWithTagAsync(string tag)
@@ -237,52 +192,105 @@ namespace GIF_GIftIdeaForum.Jobs
                 {
                     int key = tagRel[i].GiftKey;
                     var thing = await giftIdeasDbContext.PresentIdeas.FindAsync(key);
-                    Gift temp = new Gift(thing.Name, tag, thing.UpVotes, key, giftIdeasDbContext, thing, tagRel[i]);
+                    Gift temp = new Gift(thing.Name, tag, thing.UpVotes, key, thing.ImageURI, giftIdeasDbContext, thing, tagRel[i]);
                     list.Add(temp);
                 }
                 return list;
             }
             else
             {
-                DebugLog("No Tag Found");
+                DebugConsole.Log("No Tag Found");
                 return null;
             }
         }
 
-        public IEnumerable<T> GetPureDataFromDb<T>()
+        public async Task<Uri> UploadImageToBlob(FileInfo file)
         {
-            var d = typeof(T);
-            if(d == typeof(GiftIdeasTable))
+            if (file.Length < 100000)
             {
-                var list = giftIdeasDbContext.PresentIdeas;
-                return (IEnumerable<T>)list;
-            }
-            else if (d == typeof(TagTable))
-            {
-                var list = giftIdeasDbContext.Tags;
-                return (IEnumerable<T>)list;
+                Guid g = Guid.NewGuid();
+                string GuidString = Convert.ToBase64String(g.ToByteArray());
+
+                string connectionString = CloudData.ConnectionString;
+                string container = "images";
+                var conClient = new BlobContainerClient(connectionString, container);
+                DebugConsole.Log("Uploading Image");
+
+                var blobClient = conClient.GetBlobClient(GuidString + file.Name);
+                using (var filestram = File.OpenRead(file.FullName))
+                {
+                    await blobClient.UploadAsync(filestram);
+                    DebugConsole.Log(blobClient.Uri);
+                }
+                DebugConsole.Log($"{GuidString + file.Name} uploaded");
+                return blobClient.Uri;
             }
             else
             {
-                var list = giftIdeasDbContext.TagRelations;
-                return (IEnumerable<T>)list;
+                DebugConsole.Log("File too large, must be less than 100 KB");
+                return null;
             }
         }
+        public async Task<List<IListBlobItem>> GetImagesFromBlob()
+        {
+            BlobContinuationToken blobContinuationToken = null;
+            var client = CloudData.account.CreateCloudBlobClient();
+            var con = client.GetContainerReference("images");
+            BlobResultSegment blobResult = null;
+            do
+            {
+                blobResult = await con.ListBlobsSegmentedAsync(null, blobContinuationToken);
+                blobContinuationToken = blobResult.ContinuationToken;
+
+            } while (blobContinuationToken != null);
+            return blobResult.Results.ToList();
+        }
+
+
+        public async Task<bool> TagExists(string tag)
+        {
+            //System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+            //stopwatch.Start();
+
+            //var ob = giftIdeasDbContext.Tags.ToList().TakeWhile(a => a.TagName == tag);
+            //var exists = ob.Count() >= 1;
+
+            var ob = await giftIdeasDbContext.Tags.ToDictionaryAsync(a=>a.TagName, a=>a.ID);
+            var exists = ob.ContainsKey(tag);
+            /*
+            var ob = await giftIdeasDbContext.Tags.ToArrayAsync();
+            var exists = false;
+
+            Parallel.For(0, ob.Length, (i, loopstate) => { 
+                if(ob[i].TagName == tag)
+                {
+                    exists = true;
+                    loopstate.Break();
+                }
+            });*/
+            
+            //stopwatch.Stop();
+            //DebugConsole.Log(stopwatch.ElapsedMilliseconds);
+
+            return exists;
+        }
     }
+
     public class Gift : IComparable<Gift>
     {
         private string Name;
 
         public int UpVotes { get; private set; }
         public int ID { get; private set; }
-
+        public string uri { get; private set; }
         private readonly string inTag;
         public TagRelationTable trt { get; private set; }
         private PrimaryDatabase dataBase;
         public GiftIdeasTable dataBaseObject { get; private set; }
 
-        public Gift(string Name, string Tag, int Upvotes, int key, PrimaryDatabase dataBase, GiftIdeasTable dataObject, TagRelationTable tagKey)
+        public Gift(string Name, string Tag, int Upvotes, int key, string imageUri, PrimaryDatabase dataBase, GiftIdeasTable dataObject, TagRelationTable tagKey)
         {
+            uri = imageUri;
             inTag = Tag;
             this.Name = Name;
             UpVotes = Upvotes;
@@ -314,7 +322,6 @@ namespace GIF_GIftIdeaForum.Jobs
             dataBase.PresentIdeas.Remove(dataBaseObject);
             await dataBase.SaveChangesAsync();
         }
-
         public int CompareTo(Gift other)
         {
             if(other == null)

@@ -1,5 +1,5 @@
 ﻿var from = 0;
-var to = 5;
+var to = 15;
 var globalItems;
 
 function GenerateList(Items) {
@@ -21,17 +21,33 @@ function GenerateList(Items) {
         UpvoteButton.innerText = "Upvote";
         UpvoteButton.addEventListener("click", UpvoteItem.bind(null, Items[i].dataBaseObject.key, i));
 
+        const Image = document.createElement("img");
+
+        Image.src = Items[i].uri;
+
         newDiv.id = Items[i].dataBaseObject.key;
         newDiv.appendChild(UpvoteButton);
+        newDiv.appendChild(Image);
         parent.appendChild(newDiv);
     }
-    from += 5;
-    to += 5;
+    from += 15;
+    to += 15;
 }
 
 function UpvoteItem(id, index) {
-    DotNet.invokeMethodAsync('GIF_GIftIdeaForum', 'CallVotes', id);
-    const up = document.getElementById(id);
-    var textNode = up.childNodes;
-    textNode[1].nodeValue = globalItems[index].dataBaseObject.upVotes + 1;
+
+    if (typeof (Storage) !== "undefined") {
+        if (window.localStorage.getItem(id) == null) {
+            window.localStorage.setItem(id, "voted");
+            DotNet.invokeMethodAsync('GIF_GIftIdeaForum', 'CallVotes', id);
+            const up = document.getElementById(id);
+            var textNode = up.childNodes;
+            textNode[1].nodeValue = globalItems[index].dataBaseObject.upVotes + 1;
+        }
+        else {
+            alert("Already Upvoted Item!");
+        }
+    } else {
+        alert("Sorry, your browser does not support Web Storage...");
+    }
 }

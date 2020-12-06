@@ -10,10 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.IO;
 using Microsoft.CodeAnalysis;
 using System.ComponentModel.DataAnnotations;
-using System.Linq.Expressions;
-using Microsoft.JSInterop;
-using sun.tools.tree;
-using System.Diagnostics;
+
 
 /// <summary>
 /// DONT TOUCH THIS!!!!!!!
@@ -43,6 +40,8 @@ namespace GIF_GIftIdeaForum
         public string Name { get; set; }
         [Required]
         public int UpVotes { get; set; }
+        [Required]
+        public string ImageURI { get; set; }
     }
     #endregion
 
@@ -203,7 +202,7 @@ namespace GIF_GIftIdeaForum
                 Behaviour.previousPage = invokedFrom;
                 if (NewWeb == false)
                 {
-                    Debug.Log("\nConsole Log:\n" + "Start initialized" + "\n");
+                    DebugConsole.Log("\nConsole Log:\n" + "Start initialized" + "\n");
 
                     //Stopwatch stopwatch = new Stopwatch();
                     //stopwatch.Start();
@@ -225,7 +224,7 @@ namespace GIF_GIftIdeaForum
     }
 
     #region Framework
-    public static class Debug
+    public static class DebugConsole
     {
         public static void Log(object msg)
         {
@@ -257,10 +256,6 @@ namespace GIF_GIftIdeaForum
         public static PrimaryDatabase PrimaryDatabase;
     }
     public abstract class JobBehaviour : Behaviour{
-        public void DebugLog(object msg)
-        {
-            System.Diagnostics.Debug.WriteLine(msg);
-        }
         public abstract void Run();
 
         public virtual Task TaskRun()
