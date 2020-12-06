@@ -3,15 +3,15 @@
 
     protected override void OnInitialized()
     {
-        GenereateList();
+        GenerateList();
     }
 
-    async Task GenereateList()
+    async Task GenerateList()
     {
         await GIF_GIftIdeaForum.Jobs.GiftLister.DisplayItems(JS);
     }
 }
 
 <div>
-    <button @onclick="GenereateList">Show Next Five</button>
+    <button @onclick="GenerateList">Show Next Fifteen</button>
 </div>
