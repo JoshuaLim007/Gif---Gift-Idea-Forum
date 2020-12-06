@@ -20,7 +20,7 @@ namespace GIF_GIftIdeaForum.Pages
             Behaviour.PrimaryDatabase = db;
             _logger = logger;
         }
-
+        
         public async Task OnGet()
         {
             await MainC.Start(typeof(IndexModel), this);
@@ -30,6 +30,9 @@ namespace GIF_GIftIdeaForum.Pages
             //GiftLister.GoToSubPage("Christmas Day");
         }
 
+        public async Task OnPostCallSubPage(string value){
+            GiftLister.GoToSubPage("Christmas Day");
+        }
 
     }
 }

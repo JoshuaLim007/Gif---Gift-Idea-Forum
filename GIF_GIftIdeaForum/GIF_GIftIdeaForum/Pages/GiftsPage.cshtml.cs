@@ -25,9 +25,11 @@ namespace GIF_GIftIdeaForum.Pages
         {
             await MainC.Start(typeof(GiftsPageModel), this);
         }
-        public async Task OnPostListitems(IJSRuntime jS)
+
+        public async Task OnPostTestButton()
         {
-            await GiftLister.DisplayItems(jS);
+
+
         }
     }
 }

@@ -3,14 +3,16 @@ using GIF_GIftIdeaForum.Jobs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GIF_GIftIdeaForum.Migrations
 {
     [DbContext(typeof(PrimaryDatabase))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201202223701_AddImageUriToDb")]
+    partial class AddImageUriToDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
