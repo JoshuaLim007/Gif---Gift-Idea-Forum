@@ -30,10 +30,25 @@
     </div>
     <div id="GIFeventpage">
         <h1 class="Eventtitle">Events</h1>
-        <form>
-            <input />
-        </form>
-        <button class="Eventbutton"style="vertical-align:middle"><span>Event Button</span></button>
+        <!--https://docs.microsoft.com/en-us/aspnet/core/tutorials/razor-pages/search?view=aspnetcore-5.0-->
+        <div class="SubSearchDivision">
+            <input type="text" class="SubSearch" placeholder="Search" />
+        </div>
+        <div class="SubpageButtons">
+            <!--https://almostinevitable.com/divi-tutorial-center-align-multiple-buttons/-->
+            <form asp-page-handler="GoToSubPage" method="post">
+                <!--takes 8 slots before next line-->
+                <button value="Christmas Day" class="Eventbutton" style="vertical-align:middle"><span>Christmas Day</span></button>
+                <button class="Eventbutton" style="vertical-align:middle"><span>His Birthday</span></button>
+                <button class="Eventbutton" style="vertical-align:middle"><span>Her Birthday</span></button>
+                <button class="Eventbutton" style="vertical-align:middle"><span>His Valentine</span></button>
+                <button class="Eventbutton" style="vertical-align:middle"><span>Her Valentine</span></button>
+                <button class="Eventbutton" style="vertical-align:middle"><span>Event Button</span></button>
+                <button class="Eventbutton" style="vertical-align:middle"><span>Event Button</span></button>
+                <button class="Eventbutton" style="vertical-align:middle"><span>Event Button</span></button>
+                <button class="Eventbutton" style="vertical-align:middle"><span>Event Button</span></button>
+            </form>
+        </div>
     </div>
 </body>
 </html>
