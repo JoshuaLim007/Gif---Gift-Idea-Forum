@@ -7,21 +7,127 @@
 <html>
 
 <body>
-    <div>
-    
-    <!--
-    <form asp-page-handler="Listitems" method="post">
-    <button>Listitems</button>
-    </form> 
-    -->
+    <style>
 
-    @(await Html.RenderComponentAsync<GIF_GIftIdeaForum.Components.BlazorComponent>(RenderMode.ServerPrerendered))
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+            .close:hover,
+            .close:focus {
+                color: #000;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+        .Preview-Image {
+            max-width: 300px;
+            max-height: 300px;
+        }
+
+    </style>
+
+    <div class="unset">
+        <button id="uploadBtn" onclick="OpenModal()">Post Something</button>
+
+        <div id="postModal" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close" onclick="CloseModal()">&times;</span>
+                <p>Upload Idea</p>
+
+                <img id="PreviewImg" class="Preview-Image"/>
+
+                <form asp-page-handler="Gift" method="post" runat="server">
+                    <label for="inputGiftName">Gift Name</label>
+                    <input type="text" id="inputGiftName" name="inputGiftName" required
+                           minlength="4" maxlength="8" size="10">
+                    <label for="pictureUpload">Upload Image</label>
+
+                    <input type="file" accept="image/*" onchange="preview_image(event)" required>
+                    <input type="submit">
+                </form>
+
+            </div>
+
+        </div>
+
+
+        @(await Html.RenderComponentAsync<GIF_GIftIdeaForum.Components.BlazorComponent>(RenderMode.ServerPrerendered))
 
     </div>
 
-    <div id = "GiftContainer">
+    <div id="GiftContainer">
         Gift Container
     </div>
+
+
+    <script>
+
+        // When the user clicks the button, open the modal
+        function OpenModal() {
+            var modal = document.getElementById("postModal");
+            modal.style.display = "block";
+            console.log("Open Modal");
+        }
+        // When the user clicks on <span> (x), close the modal
+        function CloseModal() {
+            var modal = document.getElementById("postModal");
+            modal.style.display = "none";
+        }
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            var modal = document.getElementById("postModal");
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        function preview_image(event) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var output = document.getElementById('PreviewImg');
+                output.src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+    </script>
+
+
 
 </body>
 

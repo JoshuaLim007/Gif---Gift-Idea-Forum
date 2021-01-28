@@ -23,11 +23,12 @@ namespace GIF_GIftIdeaForum.Pages
         }
         public async Task OnGet()
         {
-            await MainC.Start(typeof(GiftsPageModel), this);
+            await MainC.Start(typeof(GiftsPageModel));
         }
-        public async Task OnPostListitems(IJSRuntime jS)
+
+        public async Task OnPostGift()
         {
-            await GiftLister.DisplayItems(jS);
+            DebugConsole.Log("uploaded");
         }
     }
 }

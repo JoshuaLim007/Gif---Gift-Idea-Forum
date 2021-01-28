@@ -19,12 +19,12 @@ using System.Threading.Tasks;
 namespace GIF_GIftIdeaForum.Jobs
 {
     [ExecutionOrder(0)]
-    [BindToClass(typeof(GiftsPageModel))]
     public class GiftListManager : JobBehaviour
     {
         public override void Run()
         {
-            var data = GiftLister.database = FindObjectOfType<DatabaseManager>();
+            if(GiftLister.database == null)
+                GiftLister.database = FindObjectOfType<DatabaseManager>();
         }
     }
 
@@ -33,7 +33,7 @@ namespace GIF_GIftIdeaForum.Jobs
         public static DatabaseManager database;
         private static string _TagName;
         private static List<Gift> Items;
-        public static IndexModel instanceParent;
+        public static IndexModel instanceParent = IndexModel.instance;
 
         public static void SetTag(string TagName)
         {
@@ -42,17 +42,31 @@ namespace GIF_GIftIdeaForum.Jobs
         public static async Task DisplayItems(IJSRuntime jS) {
             if (Items == null)
             {
-                Items = database.RetrieveDataWithTag(_TagName);
-                Items = Items.OrderBy(o => o.UpVotes).ToList();
+                Items = await database.RetrieveDataWithTagAsync(_TagName);
+                Items = Items.OrderByDescending(o => o.UpVotes).ToList();
             }
 
-            await jS.InvokeAsync<List<Items>>("GenerateList", Items);
+            if(Items.Count > 0) {
+                await jS.InvokeAsync<List<Items>>("GenerateList", Items);
+            }
+            else
+            {
+                DebugConsole.Log("No Items Found");
+            }
         }
 
-        public static void GoToSubPage(string tag)
+        public static async Task GoToSubPage(string tag)
         {
-            GiftLister.SetTag(tag);
-            instanceParent.Response.Redirect("/GiftsPage");
+            var exists = await database.TagExists(tag);
+            if (exists)
+            {
+                SetTag(tag);
+                instanceParent.Response.Redirect("/GiftsPage");
+            }
+            else
+            {
+                DebugConsole.Log("Tag does not exist: " + tag);
+            }
         }
 
         [JSInvokableAttribute("CallVotes")]
@@ -63,9 +77,9 @@ namespace GIF_GIftIdeaForum.Jobs
                 if (item.ID == id)
                 {
                     await item.IncreaseVotes();
-                    return ;
                 }
             }
         }
     }
 }
+
