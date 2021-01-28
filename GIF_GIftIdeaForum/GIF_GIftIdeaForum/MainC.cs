@@ -62,40 +62,83 @@ namespace GIF_GIftIdeaForum
     }
     public static class MainC
     {
-        private class MethodData
+        [Obsolete]private class MethodData
         {
             public List<MethodInfo> method = new List<MethodInfo>();
-            public BindToClass attribute;
+            public BindToModel attribute;
             public object _class;
         }
-        private class MethodDataList
+        [Obsolete]private class MethodDataList
         {
             public List<MethodData> _datas = new List<MethodData>();
         }
-        //private static List<Base> BaseScripts = new List<Base>();
-        private static SortedList<float, MethodDataList> OrderedExecutionTimes = new SortedList<float, MethodDataList>();
-        public static Dictionary<Type, object> AllInstanced = new Dictionary<Type, object>();
+
+        [Obsolete]private static SortedList<float, MethodDataList> OrderedExecutionTimes = new SortedList<float, MethodDataList>();
+        
+        public static Dictionary<Type, JobBehaviour> Instances = new Dictionary<Type, JobBehaviour>();
+        private static Dictionary<Type, SortedList<float, JobBehaviour>> InstanceBindedOrdered = new Dictionary<Type, SortedList<float, JobBehaviour>>();
+        private static SortedList<float, JobBehaviour> InstanceNonBindedOrdered = new SortedList<float, JobBehaviour>();
 
         private static bool NewWeb { get; set; }
+
+
         private static void FindBases()
         {
             Type parentType = typeof(JobBehaviour);
             Assembly assembly = Assembly.GetExecutingAssembly();
             Type[] types = assembly.GetTypes();
             IEnumerable<Type> subclasses = types.Where(t => t.IsSubclassOf(parentType));
-            float orderNum = 0;
+
+            DebugConsole.Log("\n" + subclasses);
+
+            //float orderNum = 0;
             foreach (var type in subclasses)
             {
 
                 ConstructorInfo cType = type.GetConstructor(Type.EmptyTypes);
                 object _class = cType.Invoke(new object[] { });
 
-                AllInstanced.Add(type, _class);
+                var typeChanged = Cast(_class, type);
+                Instances.Add(type, typeChanged);
 
-                BindToClass BindAttribute =
-                        (BindToClass)Attribute.GetCustomAttribute(type, typeof(BindToClass));
+                BindToModel BindAttribute =
+                    (BindToModel)Attribute.GetCustomAttribute(type, typeof(BindToModel));
                 ExecutionOrder ExecutionAttribute =
                     (ExecutionOrder)Attribute.GetCustomAttribute(type, typeof(ExecutionOrder));
+
+                float order = 0;
+                if (ExecutionAttribute != null)
+                {
+                    order = ExecutionAttribute.orderTime;
+                }
+                else
+                {
+                    order = 0;
+                }
+
+                if (BindAttribute != null)
+                {
+                    if (!InstanceBindedOrdered.ContainsKey(BindAttribute.parent))
+                    {
+                        InstanceBindedOrdered.Add(BindAttribute.parent, new SortedList<float, JobBehaviour>());
+                        InstanceBindedOrdered[BindAttribute.parent].Add(order, typeChanged);
+                    }
+                    else
+                    {
+                        InstanceBindedOrdered[BindAttribute.parent].Add(order, typeChanged);
+                    }
+                }
+                else
+                {
+                    InstanceNonBindedOrdered.Add(order, typeChanged);
+                }
+
+                //The below code is absolute trash.. way too slow.. reflections not good!
+                //////////////////////////////////////////////////////////////////////
+                #region
+                //Instances.Add(type, _class);
+
+                /*
 
                 if (ExecutionAttribute != null)
                 {
@@ -106,7 +149,7 @@ namespace GIF_GIftIdeaForum
                     throw new Exception("No execution order found at: " + _class.ToString());
                 }
 
-
+                //performance not good
                 if (OrderedExecutionTimes.ContainsKey(orderNum))
                 {
                     MethodData methodData = new MethodData();
@@ -143,9 +186,51 @@ namespace GIF_GIftIdeaForum
 
                     OrderedExecutionTimes.Add(orderNum, methodDataList);
                 }
+
+                */
+
+                #endregion
+                //////////////////////////////////////////////////////////////////////
             }
 
         }
+
+        public static dynamic Cast(dynamic obj, Type castTo)
+        {
+            return Convert.ChangeType(obj, castTo);
+        }
+
+        private static async Task ExecuteInstances(Type invokedFrom)
+        {
+
+            //var temp = FindObjectOfType<GiftListManager>();
+            //temp.Run();
+
+            var available = InstanceBindedOrdered.TryGetValue(invokedFrom, out SortedList<float, JobBehaviour> list);
+
+            if (list != null)
+            {
+                foreach (var item in list)
+                {
+                    var instance = item.Value;
+                    instance.Run();
+                    await instance.TaskRun();
+                }
+            }
+
+            if (InstanceNonBindedOrdered != null)
+            {
+                foreach (var item in InstanceNonBindedOrdered)
+                {
+                    var instance = item.Value;
+                    instance.Run();
+                    await instance.TaskRun();
+                }
+            }
+        }
+
+
+        [Obsolete("Use ExecuteInstances")]
         private static async Task Execute(Type invokedFrom)
         {
             foreach (var scripts in OrderedExecutionTimes)
@@ -195,7 +280,9 @@ namespace GIF_GIftIdeaForum
                 }
             }
         }
-        public static async Task Start(Type invokedFrom, object parentInstance)
+
+
+        public static async Task Start(Type invokedFrom)
         {
             if (Behaviour.previousPage != invokedFrom)
             {
@@ -204,21 +291,17 @@ namespace GIF_GIftIdeaForum
                 {
                     DebugConsole.Log("\nConsole Log:\n" + "Start initialized" + "\n");
 
-                    //Stopwatch stopwatch = new Stopwatch();
-                    //stopwatch.Start();
                     FindBases();
-                    //stopwatch.Stop();
-                    //Debug.WriteLine(stopwatch.ElapsedTicks);
 
                     NewWeb = true;
                 }
-                await Execute(invokedFrom);
+                await ExecuteInstances(invokedFrom);
             }
         }
         public static T FindObjectOfType<T>()
         {
-            object instance;
-            MainC.AllInstanced.TryGetValue(typeof(T), out instance);
+            JobBehaviour instance;
+            Instances.TryGetValue(typeof(T), out instance);
             return (T)Convert.ChangeType(instance, typeof(T));
         }
     }
@@ -231,11 +314,12 @@ namespace GIF_GIftIdeaForum
             System.Diagnostics.Debug.WriteLine(msg);
         }
     }
-    public class BindToClass : System.Attribute
+
+    public class BindToModel : System.Attribute
     {
         public Type parent;
 
-        public BindToClass(Type parent)
+        public BindToModel(Type parent)
         {
             this.parent = parent;
         }
@@ -256,16 +340,18 @@ namespace GIF_GIftIdeaForum
         public static PrimaryDatabase PrimaryDatabase;
     }
     public abstract class JobBehaviour : Behaviour{
+
         public abstract void Run();
 
         public virtual Task TaskRun()
         {
-            return null;
+            return Task.FromResult(0);
         }
         public T FindObjectOfType<T>()
         {
             return MainC.FindObjectOfType<T>();
         }
+
     }
     #endregion
 }

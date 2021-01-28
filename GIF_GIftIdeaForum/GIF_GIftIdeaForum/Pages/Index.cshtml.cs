@@ -25,8 +25,9 @@ namespace GIF_GIftIdeaForum.Pages
 
         public async Task OnGet()
         {
-            await MainC.Start(typeof(IndexModel), this);
-            //await GiftLister.GoToSubPage("Christmas Day");
+
+            await MainC.Start(typeof(IndexModel));
+
         }
 
         public async Task OnPostGoToSubPage(string SubPageTag)

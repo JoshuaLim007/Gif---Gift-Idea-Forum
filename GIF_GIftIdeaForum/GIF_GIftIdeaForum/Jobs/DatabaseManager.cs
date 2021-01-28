@@ -15,6 +15,7 @@ namespace GIF_GIftIdeaForum.Jobs
     [ExecutionOrder(-10)]
     public class DatabaseManager : JobBehaviour
     {
+        
         public static class DataDebug
         {
             public static DatabaseManager database;
