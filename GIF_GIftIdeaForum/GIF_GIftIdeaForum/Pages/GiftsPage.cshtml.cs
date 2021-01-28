@@ -23,13 +23,12 @@ namespace GIF_GIftIdeaForum.Pages
         }
         public async Task OnGet()
         {
-            await MainC.Start(typeof(GiftsPageModel), this);
+            await MainC.Start(typeof(GiftsPageModel));
         }
 
-        public async Task OnPostTestButton()
+        public async Task OnPostGift()
         {
-
-
+            DebugConsole.Log("uploaded");
         }
     }
 }

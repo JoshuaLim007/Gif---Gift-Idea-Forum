@@ -8,6 +8,7 @@
 
 <body>
     <style>
+
         body {
             font-family: Arial, Helvetica, sans-serif;
         }
@@ -50,30 +51,13 @@
                 text-decoration: none;
                 cursor: pointer;
             }
+
+        .Preview-Image {
+            max-width: 300px;
+            max-height: 300px;
+        }
+
     </style>
-    <script>
-
-        // When the user clicks the button, open the modal
-        function OpenModal() {
-            var modal = document.getElementById("postModal");
-            modal.style.display = "block";
-            console.log("Open Modal");
-        }
-
-        // When the user clicks on <span> (x), close the modal
-        function CloseModal() {
-            var modal = document.getElementById("postModal");
-            modal.style.display = "none";
-        }
-
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function (event) {
-            var modal = document.getElementById("postModal");
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-    </script>
 
     <div class="unset">
         <button id="uploadBtn" onclick="OpenModal()">Post Something</button>
@@ -85,8 +69,17 @@
                 <span class="close" onclick="CloseModal()">&times;</span>
                 <p>Upload Idea</p>
 
-                <input type="text" id="inputGiftName" name="inputGiftName" required
-                       minlength="4" maxlength="8" size="10">
+                <img id="PreviewImg" class="Preview-Image"/>
+
+                <form asp-page-handler="Gift" method="post" runat="server">
+                    <label for="inputGiftName">Gift Name</label>
+                    <input type="text" id="inputGiftName" name="inputGiftName" required
+                           minlength="4" maxlength="8" size="10">
+                    <label for="pictureUpload">Upload Image</label>
+
+                    <input type="file" accept="image/*" onchange="preview_image(event)" required>
+                    <input type="submit">
+                </form>
 
             </div>
 
@@ -100,6 +93,41 @@
     <div id="GiftContainer">
         Gift Container
     </div>
+
+
+    <script>
+
+        // When the user clicks the button, open the modal
+        function OpenModal() {
+            var modal = document.getElementById("postModal");
+            modal.style.display = "block";
+            console.log("Open Modal");
+        }
+        // When the user clicks on <span> (x), close the modal
+        function CloseModal() {
+            var modal = document.getElementById("postModal");
+            modal.style.display = "none";
+        }
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            var modal = document.getElementById("postModal");
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        function preview_image(event) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var output = document.getElementById('PreviewImg');
+                output.src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+    </script>
+
+
 
 </body>
 
