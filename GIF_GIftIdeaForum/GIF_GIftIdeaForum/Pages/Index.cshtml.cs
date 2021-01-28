@@ -34,5 +34,12 @@ namespace GIF_GIftIdeaForum.Pages
             //the button calls this function redirect to CHristmas
             GiftLister.GoToSubPage(SubPageTag);
         }
+
+        //https://www.codeproject.com/Questions/5122298/How-to-pass-a-list-of-values-cs-file-to-javascript
+        //https://stackoverflow.com/questions/11826936/pass-list-item-from-c-sharp-to-javascript-array 
+        public async Task DataBaseGetTag(string SubPageTag)
+        {
+
+        }
     }
 }

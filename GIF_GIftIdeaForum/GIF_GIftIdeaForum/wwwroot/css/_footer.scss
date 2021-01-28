@@ -1,0 +1,58 @@
+﻿@import "variables";
+
+.footer {
+    background-color: $red;
+    padding: 30px;
+
+    &__logo {
+        img {
+            width: 100px;
+            height: auto;
+        }
+    }
+    /*
+    &:not(:last-child) {
+        margin-right: 32px;
+    }
+    */
+    a {
+        cursor: pointer;
+        text-decoration: none;
+        color: #34373a;
+        transition: color 200ms ease-in-out;
+
+        &:hover {
+            color: #000000;
+        }
+    }
+
+    .FootLinks {
+        width: 150px;
+        columns: 2;
+        list-style: none;
+    }
+
+    .SecondFoodContainer {
+        .Footer_links {
+            margin: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 30px;
+
+            &__icon {
+                object-fit: contain;
+                width: 30px;
+                height: 30px;
+                opacity: .5;
+                transition: .15s;
+
+                &:hover {
+                    opacity: 1;
+                    transition: .15s;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}

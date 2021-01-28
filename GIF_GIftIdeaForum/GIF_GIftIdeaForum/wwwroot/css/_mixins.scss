@@ -1,0 +1,26 @@
+﻿@media (min-width: 64em) {
+}
+
+//https://www.sitepoint.com/managing-responsive-breakpoints-sass/
+//$small-range: (0em, 40em); /* 0, 640px */
+//$medium-range: (40.063em, 64em); /* 641px, 1024px */
+//$large-range: (64.063em, 90em); /* 1025px, 1440px */
+//  $xlarge-range: (90.063em, 120em); /* 1441px, 1920px */
+
+//at this point, viewpoint up or down,  use this style
+//640, 1024, 1400
+$breakpoints-up: ( 'medium': 40em, 'large': 64em, 'xlarge': 87.5em );
+//639, 1023, 1399
+$breakpoints-down: ( 'small': 39.9375em, 'medium': 63.9375em, 'large': 86.4375em );
+
+@mixin breakpoint-up($size) {
+    @media (min-width: map-get($breakpoints-up, $size)) {
+        @content;
+    }
+}
+
+@mixin breakpoint-down($size) {
+    @media (max-width: map-get($breakpoints-down, $size)) {
+        @content;
+    }
+}

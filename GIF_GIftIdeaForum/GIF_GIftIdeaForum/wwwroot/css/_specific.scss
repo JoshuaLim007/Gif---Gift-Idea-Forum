@@ -1,0 +1,199 @@
+﻿@import "variables";
+
+#GIFhomepage {
+    height: 100vh;
+    background: #ff406c;
+    width: auto;
+    /*
+    z-index: 1;
+    position: sticky
+    */
+}
+
+#GIFeventpage {
+    height: auto; /*follows text within button, not the button itself*/
+    background: #f4f4f4;
+    /*margin-bottom: 50px;*/
+}
+
+.EventPage {
+    padding: 100px 0px;
+}
+
+.HomeSearchDivision {
+    /*
+        i need to fix this shit again
+        try to use relative bruh not absolute
+        turns out that position and margin aren't compatible?
+    */
+    position: relative;
+    top: 30%;
+    left: 50%;
+    width: 0px;
+    /*there is some weird margin issue, but 0 auto doesn't fix it*/
+}
+
+.HomeSearch {
+    width: 600px;
+    border: 2px #ccc;
+    border-radius: 18px;
+    padding: 15px 30px;
+    font-size: 16px;
+    background: $white;
+    filter: drop-shadow(5px 5px 8px gray);
+    //insert
+    //box-shadow: inset 6px 6px 10px 0 rgba(0, 0, 0, 0.2),
+    //inset -6px -6px 10px 0 rgba(255, 255, 255, 0.5);
+    opacity: 0.90;
+}
+
+.SubSearchDivision {
+    position: relative;
+    right: 25%;
+    top: 50px;
+}
+
+.SubSearch {
+    width: 150px;
+    border: 2px #ccc;
+    border-radius: 18px;
+    padding: 15px;
+    filter: drop-shadow(5px 5px 8px gray);
+    opacity: 0.90;
+    text-align: center;
+    /*color: black;*/
+}
+
+#downbutt {
+    a {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        z-index: 2;
+        display: inline-block;
+        -webkit-transform: translate(0, -50%);
+        transform: translate(0, -50%);
+        transition: opacity .3s;
+
+        &:hover {
+            opacity: .5;
+        }
+    }
+}
+
+.scrollbutt {
+    a {
+        padding-top: 70px;
+
+        span {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 24px;
+            height: 24px;
+            margin-left: -12px;
+            border-left: 1px solid $gray;
+            border-bottom: 1px solid $gray;
+            -webkit-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+            -webkit-animation: sdb05 1.5s infinite;
+            animation: sdb05 1.5s infinite;
+            box-sizing: border-box;
+        }
+    }
+}
+
+.navSignin {
+    margin: 5px;
+}
+
+.SubpageButtons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    width: 80%; /*width: 80%;*/ /*it shifts its position??*/
+    margin: 0 auto;
+}
+
+.Eventbutton {
+    background-color: $white;
+    font-weight: bold;
+    font-size: 20px;
+    margin: 1rem;
+    height: 200px;
+    width: 200px;
+    overflow: hidden;
+    outline: none;
+
+    &:hover {
+        //pop out
+        box-shadow: 12px 12px 16px 0 rgba(0, 0, 0, 0.25), -8px -8px 12px 0 rgba(255, 255, 255, 0.3);
+        //insert
+        //box-shadow: inset 6px 6px 10px 0 rgba(0, 0, 0, 0.2),
+        //inset -6px -6px 10px 0 rgba(255, 255, 255, 0.5);
+        span {
+            padding-right: 25px;
+
+            &:after {
+                opacity: 1;
+                right: 0;
+            }
+        }
+    }
+
+    span {
+        display: inline-block;
+        position: relative;
+        transition: 0.5s;
+
+        &:after {
+            content: '\00bb';
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            right: -20px;
+            transition: 0.5s;
+        }
+    }
+}
+
+.Bigtitle {
+    text-align: center;
+    font-weight: bold;
+    font-size: 80px;
+    position: relative;
+    top: 25%;
+    margin: 0;
+    /*cursor: pointer;*/
+}
+
+.Smalltitle {
+    text-align: center;
+    font-size: 26px;
+    position: relative;
+    top: 25%;
+    margin: 0;
+}
+
+.Eventtitle {
+    position: relative;
+    text-align: center;
+    font-weight: bold;
+    font-size: 50px;
+    margin-bottom: 10px;
+}
+
+.element {
+    cursor: pointer;
+    align-items: center;
+    height: 200px;
+    width: 200px;
+    background-color: $white;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    margin-right: 4rem;
+    box-shadow: 12px 12px 16px 0 rgba(0, 0, 0, 0.25), -8px -8px 12px 0 rgba(255, 255, 255, 0.3);
+}
